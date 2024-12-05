@@ -1,6 +1,34 @@
 # Lab 9
 
 
+## Sheet
+
+
+```sh
+netcat   # creare server/client de TCP/UDP
+netstat  # vedem pe ce porturi asculta (TCP/UDP)
+
+curl     # afiseaza pagina web/resursa
+wget     # downloadeaza pagina web/resursa
+
+# FTP -> merge cu autentificare 
+```
+
+> Pentru a descarca un fisir/director de pe `GitHub` folosind `curl`/`wget`,
+> trebuie folosit **URL**-ul pentru fisierul `raw`.
+
+
+
+```sh
+$ wget -O LICENSE.md https://raw.githubusercontent.com/TrifanBogdan24/workshop-soft-eng/refs/heads/main/LICENSE
+
+$  wget -O angoster-terminal-prompt-theme.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/agnoster.minimal.omp.json
+
+$ curl -o avit.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/avit.omp.json
+```
+
+
+
 ## Task 1
 
 In terminalul 1 (serverul):
@@ -296,6 +324,122 @@ No mail for bogdan
 ```sh
 bogdan@host:~$ which s-nail
 /usr/bin/s-nail
-bogdan@host:~$ echo -e "MESAJ" | s-nail -r "bogdan.georgescu@rl.cs.pub.ro" -s "TITLU" nipasip578@luxyss.combogdan@host:~$ echo -e "Luni in intervalul 18:00-20:00 are loc un minunat workshop de Rust (da da da). E de Rust. E rapid (blazzingly fast). Stim cu toti cine preda" | s-nail -r "bogdan.georgescu@rl.cs.pub.ro" -s "Workshop" nipasip578@luxyss.com
+
+bogdan@host:~$ echo -e "MESAJ" | s-nail -r "bogdan.georgescu@rl.cs.pub.ro" -s "TITLU" nipasip578@luxyss.com
+
+bogdan@host:~$ echo -e "Luni in intervalul 18:00-20:00 are loc un minunat workshop de Rust (da da da). E de Rust. E rapid (blazzingly fast). Stim cu toti cine preda" | s-nail -r "bogdan.georgescu@rl.cs.pub.ro" -s "Workshop" nipasip578@luxyss.com
 bogdan@host:~$ 
+```
+
+
+## Task 11
+
+
+### Task 11 | Uploadare de fisier
+
+```sh
+student@host:~$ su bogdan
+
+bogdan@host:/home/student$ cd ~
+
+bogdan@host:~$ ls
+bogdan-ftp-data-3M.dat
+
+bogdan@host:~$ whoami
+bogdan
+
+bogdan@host:~$ curl -T ~/bogdan-ftp-data-3M.dat ftp://red/ --user ana:student
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 3072k    0     0  100 3072k      0  66.0M --:--:-- --:--:-- --:--:-- 66.6M
+```
+
+
+Verificare:
+
+```sh
+root@host:/home/student# go red
+
+student@red:~$ su ana
+
+ana@red:/home/student$ cd ~
+
+ana@red:~$ ls -1
+ana-ftp-file-5M.dat
+bogdan-ftp-data-3M.dat
+```
+
+
+### Task 11 | Descarcare fisier uploadat
+
+```sh
+student@host:~$ su corina
+corina@host:/home/student$ cd ~
+
+corina@host:~$ curl -o ./bogdan-ftp-data-3M.dat ftp://red/bogdan-ftp-data-3M.dat --user ana:student
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 3072k  100 3072k    0     0  65.6M      0 --:--:-- --:--:-- --:--:-- 66.6M
+
+corina@host:~$ ls -1
+
+bogdan-ftp-data-3M.dat
+
+corina@host:~$ rm bogdan-ftp-data-3M.dat
+
+corina@host:~$ curl -o ./bogdan-ftp-data-3M.dat ftp://red//home/ana/bogdan-ftp-data-3M.dat --user ana:student
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 3072k  100 3072k    0     0  65.9M      0 --:--:-- --:--:-- --:--:-- 66.6M
+```
+
+
+Verificare:
+
+
+```sh
+root@host:/home/student# go red
+
+student@red:~$ su ana
+
+ana@red:/home/student$ cd ~
+
+ana@red:~$ whoami
+ana
+
+ana@red:~$ la -1
+ana-ftp-file-5M.dat
+.bash_history
+.bash_logout
+.bashrc
+bogdan-ftp-data-3M.dat
+.profile
+
+ana@red:~$ ls /home/ana/bogdan-ftp-data-3M.dat 
+/home/ana/bogdan-ftp-data-3M.dat
+
+ana@red:~$ ls -1
+ana-ftp-file-5M.dat
+bogdan-ftp-data-3M.dat
+```
+
+
+
+## Task 12
+
+
+```sh
+root@host:~# apt-get install sharutils
+
+root@host:~# uuencode store.zip store.zip > arhiva_store.uue
+
+root@host:~# echo  "Citeste cu atentie arhiva\nArhiva nu stiu ce contine\nChiar nu\n" | mail -s "Assignment Archive" nipasip578@luxyss.com < arhiva_store.uue
+```
+
+
+
+```sh
+$ uuencode file file > file.uue
+
+$ echo <MESAJ> | mail -s <TITLU> <mail-address> < file.uue
 ```
