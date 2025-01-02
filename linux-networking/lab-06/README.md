@@ -673,7 +673,7 @@ iface eth0
 source-directory /etc/network/interfaces.d/
 
 
-autho blue-eth0
+auto blue-eth0
 iface blue-eth0 inet6 static
 	address 2203::2/64
 	gateway 2203::1
