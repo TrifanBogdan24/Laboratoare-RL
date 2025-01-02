@@ -227,15 +227,15 @@ Chain DOCKER (0 references)
 
 
 ```sh
-bogdan.trifan2412@fep8.grid.pub.ro$  # Conectare red
-bogdan.trifan2412@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 10022
+<moodle-username>@fep8.grid.pub.ro$  # Conectare red
+<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 10022
 
-bogdan.trifan2412@fep8.grid.pub.ro$  # Conectare green
-bogdan.trifan2412@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 20022
+<moodle-username>@fep8.grid.pub.ro$  # Conectare green
+<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 20022
 
 
-bogdan.trifan2412@fep8.grid.pub.ro$  # Conectare blue
-bogdan.trifan2412@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 30022
+<moodle-username>@fep8.grid.pub.ro$  # Conectare blue
+<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 30022
 ```
 
 > Difera doar numarul portului.
@@ -244,19 +244,19 @@ bogdan.trifan2412@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 30022
 
 ```sh
 eu@localhost$  # Asa ma contectez
-eu@localhost$  ssh -J bogdan.trifan2412@fep.grid.pub.ro student@10.9.4.221
+eu@localhost$  ssh -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221
 ```
 
 
 ```sh
 eu@localhost$  # Asa copiez un fisier
-eu@localhost$ scp -J bogdan.trifan2412@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_eth0_output.pcap ~/Downloads/lab8-ex7-1.pcap
+eu@localhost$ scp -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_eth0_output.pcap ~/Downloads/lab8-ex7-1.pcap
 eu@localhost$ wireshark ~/Downloads/lab8-ex7-1.pcap &
 ```
 
 
 ```sh
-eu@localhost$ scp -J bogdan.trifan2412@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_veth-red_output.pcap ~/Downloads/lab8-ex7-2.pcap
+eu@localhost$ scp -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_veth-red_output.pcap ~/Downloads/lab8-ex7-2.pcap
 eu@localhost$ wireshark ~/Downloads/lab8-ex7-2.pcap &
 ```
 
@@ -292,14 +292,14 @@ root@host:~# sysctl -w net.ipv4.ip_forward=1
 
 
 ```sh
-bogdan.trifan2412@fep8.grid.pub.ro$ # Conectare la red
-bogdan.trifan2412@fep8.grid.pub.ro$ telnet 10.9.4.221 10023
+<moodle-username>@fep8.grid.pub.ro$ # Conectare la red
+<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 10023
 
-bogdan.trifan2412@fep8.grid.pub.ro$ # Conectare la green
-bogdan.trifan2412@fep8.grid.pub.ro$ telnet 10.9.4.221 20023
+<moodle-username>@fep8.grid.pub.ro$ # Conectare la green
+<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 20023
 
-bogdan.trifan2412@fep8.grid.pub.ro$ # Conectare la blue
-bogdan.trifan2412@fep8.grid.pub.ro$ telnet 10.9.4.221 30023
+<moodle-username>@fep8.grid.pub.ro$ # Conectare la blue
+<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 30023
 ```
 
 
@@ -310,7 +310,7 @@ bogdan.trifan2412@fep8.grid.pub.ro$ telnet 10.9.4.221 30023
 A trebuit sa creez un nou VM ....am dat `reboot` din terminal :( .
 
 ```sh
-eu@localhost$ ssh -J bogdan.trifan2412@fep.grid.pub.ro student@10.9.4.221
+eu@localhost$ ssh -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221
 ```
 
 ```sh

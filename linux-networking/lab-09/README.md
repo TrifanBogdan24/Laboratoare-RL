@@ -81,11 +81,11 @@ Apoi
 
 
 ```sh
-bogdan.trifan2412@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
+<moodle-username>@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
 <h1>Laborator 10 - pe red</h1>
 
 
-bogdan.trifan2412@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
+<moodle-username>@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
 --2024-12-04 23:50:38--  http://10.9.3.64:8080/
 Connecting to 10.9.3.64:8080... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -96,7 +96,7 @@ index.html                   100%[============================================>]
 
 2024-12-04 23:50:38 (2.13 MB/s) - 'index.html' saved [31/31]
 
-bogdan.trifan2412@fep8.grid.pub.ro$ cat index.html 
+<moodle-username>@fep8.grid.pub.ro$ cat index.html 
 <h1>Laborator 10 - pe red</h1>
 ```
 
@@ -105,11 +105,11 @@ bogdan.trifan2412@fep8.grid.pub.ro$ cat index.html
 
 
 ```sh
-bogdan.trifan2412@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
+<moodle-username>@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
 <h1>Laborator 10 - pe red</h1>
 
 
-bogdan.trifan2412@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
+<moodle-username>@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
 --2024-12-04 23:50:38--  http://10.9.3.64:8080/
 Connecting to 10.9.3.64:8080... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -120,13 +120,13 @@ index.html                   100%[============================================>]
 
 2024-12-04 23:50:38 (2.13 MB/s) - 'index.html' saved [31/31]
 
-bogdan.trifan2412@fep8.grid.pub.ro$ cat index.html 
+<moodle-username>@fep8.grid.pub.ro$ cat index.html 
 <h1>Laborator 10 - pe red</h1>
 ```
 
 
 ```sh
-bogdan.trifan2412@fep8.grid.pub.ro$ wget -q http://10.9.3.64:8080
+<moodle-username>@fep8.grid.pub.ro$ wget -q http://10.9.3.64:8080
 ```
 
 
