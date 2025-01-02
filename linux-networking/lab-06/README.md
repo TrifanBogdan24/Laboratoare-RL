@@ -1,7 +1,23 @@
 # Laborator 06
 
+*Cuprins*:
+- [Laborator 06](#laborator-06)
+  - [Task 01 | Configurare si stergere adrese IP](#task-01--configurare-si-stergere-adrese-ip)
+  - [Task 02 | Configurare adrese IP](#task-02--configurare-adrese-ip)
+    - [red(red-eth0) \<-\> host(veth-red)](#redred-eth0---hostveth-red)
+    - [green(green-eth0) \<-\> host(veth-green)](#greengreen-eth0---hostveth-green)
+  - [Task 03 | Adresare IP si rutare](#task-03--adresare-ip-si-rutare)
+  - [Task 04](#task-04)
+  - [Task 04 | Configurare conectivitate completa](#task-04--configurare-conectivitate-completa)
+  - [Task 05 | Tabela ARP](#task-05--tabela-arp)
+  - [Task 06 | Depanare problema configurare adresa IP](#task-06--depanare-problema-configurare-adresa-ip)
+  - [Task 07 | Depanare problema de conectivitate](#task-07--depanare-problema-de-conectivitate)
+  - [Tabk 08 | IPv6](#tabk-08--ipv6)
+  - [Task 09 (Bonus) | Configurare persistenta](#task-09-bonus--configurare-persistenta)
 
-## Task 01
+
+
+## Task 01 | Configurare si stergere adrese IP
 
 
 ```sh
@@ -105,18 +121,18 @@ root@red:~$ ip addr show dev red-eth0
 ```
 
 
-## Task 02
+## Task 02 | Configurare adrese IP
 
 
 Atribuire adrese IP:
 
 - Spatiul 10.10.10.0/24
-  - host/veth-red: 10.10.10.1/24
-  - red/red-eth0: 10.10.10.2/24
+  - host/veth-red: **10.10.10.1/24**
+  - red/red-eth0: **10.10.10.2/24**
 
 - Spatiul 10.10.20.0/24
-  -  host/veth-green: 10.10.20.1/24
-  -  green/green-eth0: 10.10.20.2/24
+  -  host/veth-green: **10.10.20.1/24**
+  -  green/green-eth0: **10.10.20.2/24**
 
 
 
@@ -162,7 +178,7 @@ root@green:~$ ping -c 1  10.10.20.1    # IP host/veth-green
 
 
 
-## Task 03
+## Task 03 | Adresare IP si rutare
 
 
 > IP host/veth-red = `10.10.10.1`
@@ -230,12 +246,12 @@ root@host:~# tcpdump -n -i veth-red
 
 
 
-## Task 04
+## Task 04 | Configurare conectivitate completa
 
 
 Spatiul 10.10.30.0/24:
-- host/veth-blue: 10.10.30.1/24
-- blue/blue-eth0: 10.10.30.2/24
+- host/veth-blue: **10.10.30.1/24**
+- blue/blue-eth0: **10.10.30.2/24**
 
 
 ```sh
@@ -266,7 +282,7 @@ root@green:~$ ping -c 1 10.10.10.2  # IP red
 
 
 
-## Task 05
+## Task 05 | Tabela ARP
 
 ```sh
 root@host:~# # Printare tabela ARP
@@ -346,7 +362,7 @@ root@blue:~$ ip neighbour show
 > `ARP request`-urile pot lua ceva timp pana sa updateze tabela.
 
 
-## Task 06
+## Task 06 | Depanare problema configurare adresa IP
 
 
 ```sh
@@ -355,8 +371,8 @@ root@host:~#  start_lab ip ex6
 
 
 Atribuirea corecta adreselor IP:
-- host/veth-red: 7.7.7.1/24
-- red/red-eth0: 7.7.7.2/24
+- host/veth-red: **7.7.7.1/24**
+- red/red-eth0: **7.7.7.2/24**
 
 > IP-ul pentru red/red-eth0 a fost configurat gresit (cu masca gresita de **/32**).
 
@@ -379,7 +395,7 @@ rtt min/avg/max/mdev = 0.021/0.032/0.044/0.011 ms
 ```
 
 
-## Task 07
+## Task 07 | Depanare problema de conectivitate
 
 
 ```sh
@@ -418,4 +434,261 @@ root@blue:~$ ping -c 1 192.168.1.2   # IP green
 root@blue:~$ ping -c 1 192.168.2.2   # IP red
 ```
 
-TODO: continue
+
+## Tabk 08 | IPv6
+
+
+Adresare IPv:
+
+- Spatiul 2201::/64 
+  - host/veth-red: **2201::1/64**
+  - red/red-eth0: **2201::2/64**
+
+- Spatiul 2202::/64
+  - host/veth-green: **2202::1/64**
+  - green/green-eth0: **2202::2/64**
+
+- Spatiul 2203::/64
+  - host/veth-blue: **2203::1/64**
+  - blue/blue-eth0: **2203::2/64**
+
+
+```sh
+root@host:~# sysctl -w net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.all.forwarding = 1
+
+root@host:~# sysctl net.ipv6.conf.all.forwarding    # Comanda de verificare
+net.ipv6.conf.all.forwarding = 1
+
+root@host:~# 
+
+```
+
+
+> NU da `flush` pe nicio interfata!
+
+
+```sh
+root@host:~# ip -6 addr add 2201::1/64 dev veth-red
+root@host:~# ip -6 addr add 2202::1/64 dev veth-green
+root@host:~# ip -6 addr add 2203::1/64 dev veth-blue
+root@host:~# ip -6 a      # Comanda de verificare
+```
+
+
+```sh
+root@red:~$ ip -6 addr add 2201::2/64 dev red-eth0
+root@red:~$ ip -6 a       # Comanda de verificare
+root@red:~$ ip -6 route add default via 2201::1   
+root@red:~$ ip -6 r       # Comanda de verificare
+```
+
+
+```sh
+root@green:~$ ip -6 addr add 2202::2/64 dev green-eth0
+root@green:~$ ip -6 a       # Comanda de verificare
+root@green:~$ ip -6 route add default via 2202::1   
+root@green:~$ ip -6 r       # Comanda de verificare
+```
+
+
+```sh
+root@blue:~$ ip -6 addr add 2203::2/64 dev blue-eth0
+root@blue:~$ ip -6 a       # Comanda de verificare
+root@blue:~$ ip -6 route add default via 2203::1   
+root@blue:~$ ip -6 r       # Comanda de verificare
+```
+
+
+Testare conectivitate:
+
+```sh
+root@host:~# ping -c 1 2201::2   # IP red
+root@host:~# ping -c 1 2202::2   # IP green
+root@host:~# ping -c 1 2203::2   # IP blue
+```
+
+
+```sh
+root@red:~$ ping -6 -c 1 2201::1  # IP host/veth-red
+root@red:~$ ping -6 -c 1 2202::2  # IP green
+root@red:~$ ping -6 -c 1 2203::2  # IP blue
+```
+
+```sh
+root@green:~$ ping -6 -c 1 2201::2  # IP red
+root@green:~$ ping -6 -c 1 2202::1  # IP host/veth-green
+root@green:~$ ping -6 -c 1 2203::2  # IP blue
+```
+
+
+```sh
+root@blue:~$ ping -6 -c 1 2201::2  # IP red
+root@blue:~$ ping -6 -c 1 2202::2  # IP green
+root@blue:~$ ping -6 -c 1 2203::1  # IP host/veth-blue
+```
+
+
+## Task 09 (Bonus) | Configurare persistenta
+
+
+```sh
+root@host:~# # Setup
+root@host:~# start_lab ip ex9
+root@host:~# ip address flush dev veth-red
+```
+
+
+> Se folosesc adresele IPv6 de la task-ul precedent.
+
+
+
+
+```sh
+root@host:~# grep -H -n "net.ipv6.conf.all.forwarding" /etc/sysctl.conf 
+/etc/sysctl.conf:33:#net.ipv6.conf.all.forwarding=1
+```
+
+
+> Rutarea IPv6 este la linia **33** din `/etc/sysctl.conf`.
+
+```sh
+root@host:~# nano -l /etc/sysctl.conf     # Line 33
+```
+
+
+```sh
+root@host:~# nano -l /etc/network/interfaces
+```
+```
+# Persistent network interfaces (ifupdown-ng)
+# RTFM: https://github.com/ifupdown-ng/ifupdown-ng/blob/main/doc/interfaces.scd
+
+# The loopback network interface
+auto lo
+
+# The primary network interface
+auto eth0
+iface eth0
+	use dhcp
+
+# Load everything inside interfaces.d subdirectory (recommended)
+source-directory /etc/network/interfaces.d/
+
+
+auto veth-red
+iface veth-red inet6 static
+	address 2201::1/64
+
+auto veth-green
+iface veth-green inet6 static
+	address 2202::1/64
+
+auto veth-blue
+iface veth-blue inet6 static
+	address 2203::1/64
+```
+```sh
+root@host:~# # Verificare
+root@host:~# ifdown veth-red veth-green veth-blue ; ifup veth-red veth-green veth-blue ; ip -6 a
+```
+
+
+```sh
+root@red:~$ nano -l /etc/network/interfaces
+```
+```
+# Persistent network interfaces (ifupdown-ng)
+# RTFM: https://github.com/ifupdown-ng/ifupdown-ng/blob/main/doc/interfaces.scd
+
+# The loopback network interface
+auto lo
+
+# The primary network interface
+auto eth0
+iface eth0
+	use dhcp
+
+# Load everything inside interfaces.d subdirectory (recommended)
+source-directory /etc/network/interfaces.d/
+
+
+auto red-eth0
+iface red-eth0 inet6 static
+	address 2201::2/64
+	gateway 2201::1
+```
+```sh
+root@red:~$ # Verificare
+root@red:~$ ifdown red-eth0 ; ifup red-eth0 ; ip -6 a
+```
+
+
+```sh
+root@green:~$ nano -l /etc/network/interfaces
+```
+```
+# Persistent network interfaces (ifupdown-ng)
+# RTFM: https://github.com/ifupdown-ng/ifupdown-ng/blob/main/doc/interfaces.scd
+
+# The loopback network interface
+auto lo
+
+# The primary network interface
+auto eth0
+iface eth0
+	use dhcp
+
+# Load everything inside interfaces.d subdirectory (recommended)
+source-directory /etc/network/interfaces.d/
+
+
+auto green-eth0
+iface green-eth0 inet6 static
+	address 2202::2/64
+	gateway 2202::1
+```
+```sh
+root@green:~$ # Verificare
+root@green:~$ ifdown green-eth0 ; ifup green-eth0 ; ip -6 a
+```
+
+
+```sh
+root@blue:~$ nano -l /etc/network/interfaces
+```
+```
+# Persistent network interfaces (ifupdown-ng)
+# RTFM: https://github.com/ifupdown-ng/ifupdown-ng/blob/main/doc/interfaces.scd
+
+# The loopback network interface
+auto lo
+
+# The primary network interface
+auto eth0
+iface eth0
+	use dhcp
+
+# Load everything inside interfaces.d subdirectory (recommended)
+source-directory /etc/network/interfaces.d/
+
+
+autho blue-eth0
+iface blue-eth0 inet6 static
+	address 2203::2/64
+	gateway 2203::1
+```
+```sh
+root@blue:~$ # Verificare
+root@blue:~$ ifdown blue-eth0 ; ifup blue-eth0 ; ip -6 a
+```
+
+
+
+
+
+Testul final
+
+```sh
+root@host:~# reboot  # Va iesi din SSH....nu m-am putut reconecta instant (a trebuit sa astept un pic)
+```
