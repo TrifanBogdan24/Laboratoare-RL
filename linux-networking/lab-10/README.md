@@ -1,4 +1,17 @@
-# Laboratorul 10
+# Laborator 10
+
+
+*Cuprins*:
+- [Laborator 10](#laborator-10)
+  - [Task 1 | Aflare adresa IP publica](#task-1--aflare-adresa-ip-publica)
+  - [Task 2 | Aflare informatii despre adresa IP publica](#task-2--aflare-informatii-despre-adresa-ip-publica)
+  - [Task 3 | DNS Resolution](#task-3--dns-resolution)
+  - [Task 4 | Descoperirea porturiloe TCP deschise](#task-4--descoperirea-porturiloe-tcp-deschise)
+  - [Task 5 | Determinarea versiunilor aplicatiilor descoperite](#task-5--determinarea-versiunilor-aplicatiilor-descoperite)
+  - [Task 6 | Analiza securiatii retelei prin intermediului browser-ului](#task-6--analiza-securiatii-retelei-prin-intermediului-browser-ului)
+  - [Task 7 | Utilizarea serviciilor de detectare a vulnerabilitatilor](#task-7--utilizarea-serviciilor-de-detectare-a-vulnerabilitatilor)
+  - [Task 8 | Rulare **Dos** (Denial of Service) pe un server web](#task-8--rulare-dos-denial-of-service-pe-un-server-web)
+  - [Task 9 | Rulare **Main in The Midle**](#task-9--rulare-main-in-the-midle)
 
 
 > Link-uri:

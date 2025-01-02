@@ -1,3 +1,24 @@
+# Laborator 08
+
+*Cuprins*:
+- [Laborator 08](#laborator-08)
+  - [Task 01](#task-01)
+  - [Task 02](#task-02)
+  - [Task 03](#task-03)
+  - [Task 04](#task-04)
+  - [Task 05](#task-05)
+  - [Task 06](#task-06)
+  - [Task 07](#task-07)
+  - [Task 08](#task-08)
+  - [Task 09](#task-09)
+  - [Task 10](#task-10)
+  - [Task 11](#task-11)
+
+
+## Task 01
+
+Doar ruleaza comenzile :).
+
 
 ## Task 02
 

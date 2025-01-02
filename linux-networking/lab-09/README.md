@@ -1,4 +1,22 @@
-# Lab 9
+# Laborator 09
+
+*Cuprins*:
+- [Laborator 09](#laborator-09)
+  - [Sheet](#sheet)
+  - [Task 1](#task-1)
+  - [Task 2](#task-2)
+  - [Task 3](#task-3)
+  - [Task 4](#task-4)
+  - [Task 5](#task-5)
+  - [Task 6](#task-6)
+  - [Task 7](#task-7)
+  - [Task 8](#task-8)
+  - [Task 9](#task-9)
+  - [Task 10](#task-10)
+  - [Task 11](#task-11)
+    - [Task 11 | Uploadare de fisier](#task-11--uploadare-de-fisier)
+    - [Task 11 | Descarcare fisier uploadat](#task-11--descarcare-fisier-uploadat)
+  - [Task 12](#task-12)
 
 
 ## Sheet
