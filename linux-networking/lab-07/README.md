@@ -391,7 +391,7 @@ root@host:~# mv capture-red.pcap /home/student/
 ```
 
 ```sh
-je@localhost:~$ scp -J <moodle-username>@fep.grid.pub.ro student@<IP-VM>:~/capture-red.pcap ~/Downloads/capture-red.pcap
+je@localhost:~$ scp -J moodle-username@fep.grid.pub.ro student@<IP-VM>:~/capture-red.pcap ~/Downloads/capture-red.pcap
 je@localhost:~$ wireshark ~/Downloads/capture-red.pcap &
 ```
 

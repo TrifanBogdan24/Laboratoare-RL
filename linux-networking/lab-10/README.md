@@ -11,7 +11,7 @@
   - [Task 6 | Analiza securiatii retelei prin intermediului browser-ului](#task-6--analiza-securiatii-retelei-prin-intermediului-browser-ului)
   - [Task 7 | Utilizarea serviciilor de detectare a vulnerabilitatilor](#task-7--utilizarea-serviciilor-de-detectare-a-vulnerabilitatilor)
   - [Task 8 | Rulare **Dos** (Denial of Service) pe un server web](#task-8--rulare-dos-denial-of-service-pe-un-server-web)
-  - [Task 9 | Rulare **Main in The Midle**](#task-9--rulare-main-in-the-midle)
+  - [Task 9 (Bonus) | Rulare **Main in The Midle**](#task-9-bonus--rulare-main-in-the-midle)
 
 
 > Link-uri:
@@ -489,7 +489,7 @@ root@host:~# start_lab mitm
 
 
 
-## Task 9 | Rulare **Main in The Midle**
+## Task 9 (Bonus) | Rulare **Main in The Midle**
 
 
 > Dupa **Dos**-ul de mai devreme, nu o sa mearga `https://curs.upb.ro/`.

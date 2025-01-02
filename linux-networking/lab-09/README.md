@@ -3,20 +3,20 @@
 *Cuprins*:
 - [Laborator 09](#laborator-09)
   - [Sheet](#sheet)
-  - [Task 1](#task-1)
-  - [Task 2](#task-2)
-  - [Task 3](#task-3)
-  - [Task 4](#task-4)
-  - [Task 5](#task-5)
-  - [Task 6](#task-6)
-  - [Task 7](#task-7)
-  - [Task 8](#task-8)
-  - [Task 9](#task-9)
-  - [Task 10](#task-10)
-  - [Task 11](#task-11)
+  - [Task 1 | Observare porturi deschise pe o statie](#task-1--observare-porturi-deschise-pe-o-statie)
+  - [Task 2 | Port forwarding pentru accesare serviciu web](#task-2--port-forwarding-pentru-accesare-serviciu-web)
+  - [Task 3 | Accesare serviciu web folosind `wget`](#task-3--accesare-serviciu-web-folosind-wget)
+  - [Task 4 | Descarcare recursiva de resurse web (`wget -r`)](#task-4--descarcare-recursiva-de-resurse-web-wget--r)
+  - [Task 5 | Accesare UR: cptomamd caractere speciale (**escapare**)](#task-5--accesare-ur-cptomamd-caractere-speciale-escapare)
+  - [Task 6 | Accesare de pagini web folosind `curl`](#task-6--accesare-de-pagini-web-folosind-curl)
+  - [Task 7 | Download FTP folosind `curl` (fara autentificare)](#task-7--download-ftp-folosind-curl-fara-autentificare)
+  - [Task 8 | Trimitere FTP cu `curl` (cu autentificare)](#task-8--trimitere-ftp-cu-curl-cu-autentificare)
+  - [Task 9 | Trimitere **e-mail** din linia de comanda (`mail`)](#task-9--trimitere-e-mail-din-linia-de-comanda-mail)
+  - [Task 10 | Trimitere **e-mail** cu adresa personalizata din linia de comanda (`mail`)](#task-10--trimitere-e-mail-cu-adresa-personalizata-din-linia-de-comanda-mail)
+  - [Task 11 (Bonus) | Upload prin FTP](#task-11-bonus--upload-prin-ftp)
     - [Task 11 | Uploadare de fisier](#task-11--uploadare-de-fisier)
     - [Task 11 | Descarcare fisier uploadat](#task-11--descarcare-fisier-uploadat)
-  - [Task 12](#task-12)
+  - [Task 12 (Bonus) | Trimitere **e-mail** cu atasament din linia de comanda](#task-12-bonus--trimitere-e-mail-cu-atasament-din-linia-de-comanda)
 
 
 ## Sheet
@@ -47,7 +47,7 @@ $ curl -o avit.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-p
 
 
 
-## Task 1
+## Task 1 | Observare porturi deschise pe o statie
 
 In terminalul 1 (serverul):
 ```sh
@@ -63,7 +63,7 @@ root@host:~$ echo "Un mesaj" | nc -u localhost 2024
 ```
 
 
-## Task 2
+## Task 2 | Port forwarding pentru accesare serviciu web
 
 
 
@@ -81,11 +81,11 @@ Apoi
 
 
 ```sh
-<moodle-username>@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
+moodle-username@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
 <h1>Laborator 10 - pe red</h1>
 
 
-<moodle-username>@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
+moodle-username@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
 --2024-12-04 23:50:38--  http://10.9.3.64:8080/
 Connecting to 10.9.3.64:8080... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -96,20 +96,20 @@ index.html                   100%[============================================>]
 
 2024-12-04 23:50:38 (2.13 MB/s) - 'index.html' saved [31/31]
 
-<moodle-username>@fep8.grid.pub.ro$ cat index.html 
+moodle-username@fep8.grid.pub.ro$ cat index.html 
 <h1>Laborator 10 - pe red</h1>
 ```
 
 
-## Task 3
+## Task 3 | Accesare serviciu web folosind `wget`
 
 
 ```sh
-<moodle-username>@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
+moodle-username@fep8.grid.pub.ro$ curl http://10.9.3.64:8080
 <h1>Laborator 10 - pe red</h1>
 
 
-<moodle-username>@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
+moodle-username@fep8.grid.pub.ro$ wget http://10.9.3.64:8080
 --2024-12-04 23:50:38--  http://10.9.3.64:8080/
 Connecting to 10.9.3.64:8080... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -120,13 +120,13 @@ index.html                   100%[============================================>]
 
 2024-12-04 23:50:38 (2.13 MB/s) - 'index.html' saved [31/31]
 
-<moodle-username>@fep8.grid.pub.ro$ cat index.html 
+moodle-username@fep8.grid.pub.ro$ cat index.html 
 <h1>Laborator 10 - pe red</h1>
 ```
 
 
 ```sh
-<moodle-username>@fep8.grid.pub.ro$ wget -q http://10.9.3.64:8080
+moodle-username@fep8.grid.pub.ro$ wget -q http://10.9.3.64:8080
 ```
 
 
@@ -139,7 +139,8 @@ root@host:~# cat file.dat
 ```
 
 
-## Task 4
+## Task 4 | Descarcare recursiva de resurse web (`wget -r`)
+
 
 ```sh
 $ wget -h | grep 'recursive'
@@ -160,7 +161,7 @@ roo@host:~# tree red
 
 
 
-## Task 5
+## Task 5 | Accesare UR: cptomamd caractere speciale (**escapare**)
 
 
 
@@ -189,7 +190,7 @@ Your email address is: rl@upb.ro</body>
 ```
 
 
-## Task 6
+## Task 6 | Accesare de pagini web folosind `curl`
 
 
 ```sh
@@ -202,7 +203,7 @@ root@host:~#
 
 
 
-## Task 7
+## Task 7 | Download FTP folosind `curl` (fara autentificare)
 
 
 
@@ -240,7 +241,7 @@ root@host:~# diff file-2-of-10M file-10M.dat
 
 
 
-## Task 8
+## Task 8 | Trimitere FTP cu `curl` (cu autentificare)
 
 
 
@@ -259,7 +260,7 @@ root@host:~# # NU RULA: cat ana-ftp-file-5M.dat
 ```
 
 
-## Task 9
+## Task 9 | Trimitere **e-mail** din linia de comanda (`mail`)
 
 
 > Utilitarul `mail` foloseste **?** drept prompt.
@@ -310,7 +311,7 @@ corina@host:/home/bogdan$ mail
 
 
 
-## Task 10
+## Task 10 | Trimitere **e-mail** cu adresa personalizata din linia de comanda (`mail`)
 
 
 > Adresa de mail `nipasip578@luxyss.com` este o adresa temporara de mail
@@ -350,7 +351,7 @@ bogdan@host:~$
 ```
 
 
-## Task 11
+## Task 11 (Bonus) | Upload prin FTP
 
 
 ### Task 11 | Uploadare de fisier
@@ -443,7 +444,7 @@ bogdan-ftp-data-3M.dat
 
 
 
-## Task 12
+## Task 12 (Bonus) | Trimitere **e-mail** cu atasament din linia de comanda
 
 
 ```sh

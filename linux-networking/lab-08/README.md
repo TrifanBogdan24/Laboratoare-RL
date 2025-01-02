@@ -2,29 +2,47 @@
 
 *Cuprins*:
 - [Laborator 08](#laborator-08)
-  - [Task 01](#task-01)
-  - [Task 02](#task-02)
-  - [Task 03](#task-03)
-  - [Task 04](#task-04)
-  - [Task 05](#task-05)
-  - [Task 06](#task-06)
-  - [Task 07](#task-07)
-  - [Task 08](#task-08)
-  - [Task 09](#task-09)
-  - [Task 10](#task-10)
-  - [Task 11](#task-11)
+  - [Task 01 | Configurare translatare de adrese (**MASQUERADE**)](#task-01--configurare-translatare-de-adrese-masquerade)
+  - [Task 02 | Format de pachete la translatare (`tcpdump`)](#task-02--format-de-pachete-la-translatare-tcpdump)
+  - [Task 03 | Format de pachete TCP la translatare (`tcpdump`)](#task-03--format-de-pachete-tcp-la-translatare-tcpdump)
+  - [Task 04 | Configurare incorecta a translatarii](#task-04--configurare-incorecta-a-translatarii)
+  - [Task 05 | Port Forwarding](#task-05--port-forwarding)
+  - [Task 06 | Extindere port forwarding](#task-06--extindere-port-forwarding)
+  - [Task 07 | Format de pachete la port forwarding (`tcpdump`)](#task-07--format-de-pachete-la-port-forwarding-tcpdump)
+  - [Task 08 | Port forwarding pentru `telnet`](#task-08--port-forwarding-pentru-telnet)
+  - [Task 09 | Configurare persistenta rutare si NAT](#task-09--configurare-persistenta-rutare-si-nat)
+  - [Task 10 | Tunel SSH invers](#task-10--tunel-ssh-invers)
+  - [Task 11 (Bonus) | Translatare selectiva de adrese](#task-11-bonus--translatare-selectiva-de-adrese)
 
 
-## Task 01
+
+```sh
+root@host:~# update_lab --force
+root@host:~# start_lab lab-nat
+```
+
+## Task 01 | Configurare translatare de adrese (**MASQUERADE**)
 
 Doar ruleaza comenzile :).
 
 
-## Task 02
+```sh
+# Cel mai important
+root@host:~# iptables -t nat -A POSTROUTING -j MASQUERADE
+
+# Verificare
+root@host:~# iptables -t nat -L POSTROUTING -n -v
+```
+
+## Task 02 | Format de pachete la translatare (`tcpdump`)
 
 ```sh
+root@host:~# tcpdump -n -i eth0 ip dst host 8.8.8.8
+root@host:~# tcpdump -n -i veth-red ip dst host 8.8.8.8
+root@host:~# tcpdump -n -i any ip dst host 8.8.8.8
+
 root@host:~# # Cu pachete de reply
-root@host:~# tcpdump -n -i any src host 8.8.8.8
+root@host:~# tcpdump -n -i any ip src host 8.8.8.8
 
 root@host:~# # fara Domain Name Server
 root@host:~# tcpdump -i any ip dst host 8.8.8.8
@@ -33,7 +51,7 @@ root@host:~# tcpdump -i any ip dst host 8.8.8.8
 
 
 
-## Task 03
+## Task 03 | Format de pachete TCP la translatare (`tcpdump`)
 
 
 ```sh
@@ -42,6 +60,9 @@ root@host:~# tcpdump -i any dst 141.85.241.57 and dst port 80
 root@host:~# tcpdump -i any dst 141.85.241.57 and tcp dst port 80
 root@host:~# tcpdump -n -i any dst 141.85.241.57 and tcp dst port 80
 ```
+
+
+> tcdump sheet: <https://cdn.comparitech.com/wp-content/uploads/2019/06/tcpdump-cheat-sheet-1.pdf>.
 
 
 ```sh
@@ -60,7 +81,7 @@ root@red:student$ wget cs.pub.ro
 ```
 
 
-## Task 04
+## Task 04 | Configurare incorecta a translatarii
 
 
 A nu se rula pe host:
@@ -82,7 +103,7 @@ root@host:~# pkill tcpdump
 ```
 
 
-## Task 05
+## Task 05 | Port Forwarding
 
 
 ```sh
@@ -105,7 +126,7 @@ ssh -l student 10.9.4.221 -p 10022
 ```
 
 
-## Task 06
+## Task 06 | Extindere port forwarding
 
 
 
@@ -227,36 +248,36 @@ Chain DOCKER (0 references)
 
 
 ```sh
-<moodle-username>@fep8.grid.pub.ro$  # Conectare red
-<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 10022
+moodle_username@fep8.grid.pub.ro$  # Conectare red
+moodle-username@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 10022
 
-<moodle-username>@fep8.grid.pub.ro$  # Conectare green
-<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 20022
+moodle-username@fep8.grid.pub.ro$  # Conectare green
+moodle-username@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 20022
 
 
-<moodle-username>@fep8.grid.pub.ro$  # Conectare blue
-<moodle-username>@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 30022
+moodle-username@fep8.grid.pub.ro$  # Conectare blue
+moodle-username@fep8.grid.pub.ro$ ssh -l student 10.9.4.221 -p 30022
 ```
 
 > Difera doar numarul portului.
 
-## Task 07
+## Task 07 | Format de pachete la port forwarding (`tcpdump`)
 
 ```sh
 eu@localhost$  # Asa ma contectez
-eu@localhost$  ssh -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221
+eu@localhost$  ssh -J moodle-username@fep.grid.pub.ro student@10.9.4.221
 ```
 
 
 ```sh
 eu@localhost$  # Asa copiez un fisier
-eu@localhost$ scp -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_eth0_output.pcap ~/Downloads/lab8-ex7-1.pcap
+eu@localhost$ scp -J moodle-username@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_eth0_output.pcap ~/Downloads/lab8-ex7-1.pcap
 eu@localhost$ wireshark ~/Downloads/lab8-ex7-1.pcap &
 ```
 
 
 ```sh
-eu@localhost$ scp -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_veth-red_output.pcap ~/Downloads/lab8-ex7-2.pcap
+eu@localhost$ scp -J moodle-username@fep.grid.pub.ro student@10.9.4.221:/home/student/portfwd_veth-red_output.pcap ~/Downloads/lab8-ex7-2.pcap
 eu@localhost$ wireshark ~/Downloads/lab8-ex7-2.pcap &
 ```
 
@@ -266,7 +287,7 @@ eu@localhost$ wireshark ~/Downloads/lab8-ex7-2.pcap &
 > La prima captura, destinatia este cea din adresa privata 10.9.x.x (netranslatata)
 
 
-## Task 08
+## Task 08 | Port forwarding pentru `telnet`
 
 
 ```sh
@@ -292,31 +313,32 @@ root@host:~# sysctl -w net.ipv4.ip_forward=1
 
 
 ```sh
-<moodle-username>@fep8.grid.pub.ro$ # Conectare la red
-<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 10023
+moodle-username@fep8.grid.pub.ro$ # Conectare la red
+moodle-username@fep8.grid.pub.ro$ telnet 10.9.4.221 10023
 
-<moodle-username>@fep8.grid.pub.ro$ # Conectare la green
-<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 20023
+moodle-username@fep8.grid.pub.ro$ # Conectare la green
+moodle-username@fep8.grid.pub.ro$ telnet 10.9.4.221 20023
 
-<moodle-username>@fep8.grid.pub.ro$ # Conectare la blue
-<moodle-username>@fep8.grid.pub.ro$ telnet 10.9.4.221 30023
+moodle-username@fep8.grid.pub.ro$ # Conectare la blue
+moodle-username@fep8.grid.pub.ro$ telnet 10.9.4.221 30023
 ```
 
 
 
-## Task 09
+## Task 09 | Configurare persistenta rutare si NAT
 
 
-A trebuit sa creez un nou VM ....am dat `reboot` din terminal :( .
 
 ```sh
-eu@localhost$ ssh -J <moodle-username>@fep.grid.pub.ro student@10.9.4.221
+eu@localhost$ ssh -J moodle-username@fep.grid.pub.ro student@10.9.4.221
 ```
 
 ```sh
 root@host:/home# update_lab --force
-root@host:/home#  start_lab lab-nat
+root@host:/home# start_lab lab-nat
 
+
+# Recapitulare reguli iptables
 
 # Port forwarding (SSH): portul 22 al lui red (192.168.1.2) este mapat la portul 10022 al host-ului
 root@host:~# iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10022 -j DNAT --to-destination 192.168.1.2:22
@@ -359,14 +381,24 @@ root@host:/home/student# iptables-legacy-save > /etc/iptables-rules
 ```
 
 
-## Task 10
+```sh
+root@host:~# cat /etc/network/interfaces
+[...]
+# The primary network interface
+auto eth0
+iface eth0 inet dhcp
+        up iptables-restore < /etc/iptables-rules
+```
+
+
+## Task 10 | Tunel SSH invers
 
 
 Am incercat sa deschid inca un VM sa ma conectez la el, dar nu a mers :(
 
 
 
-## Task 11
+## Task 11 (Bonus) | Translatare selectiva de adrese
 
 
 ```sh
